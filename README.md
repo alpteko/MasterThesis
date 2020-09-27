@@ -26,6 +26,6 @@ onmt-main infer \
     --checkpoint_path [ModelPath(AverageModel)]
 ## Evaluation
 Use eval scripts evaluation_utils and pbs
-Code: evaluation_utils.evaluate(ref_file=,tran_file=, metric=)
+Code: evaluation_utils.evaluate(ref_file=,tran_file=, metric=) \
 Script: python3 pbs.py -reference-file REFERENCE_FILE --baseline-file
               BASELINE_FILE --sample-size SAMPLE_SIZE
