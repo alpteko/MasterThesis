@@ -1,0 +1,120 @@
+model_dir: medium-experiment
+
+data:
+
+  eval_features_file: # Eval Features 
+
+  eval_labels_file: 
+
+  train_features_file: 
+  train_labels_file: 
+  target_words_vocabulary: 
+
+params:
+  optimizer: AdamOptimizer
+  optimizer_params:
+    beta1: 0.9
+    beta2: 0.998
+  learning_rate: 0.0001
+  decay_type: exponential_decay
+  decay_rate: 0.95
+  decay_steps: 800
+  start_decay_steps: 1000
+  param_init: 0.02
+  clip_gradients: 5.0
+  average_loss_in_time: true
+  label_smoothing: 0.1
+  beam_width: 3
+  minimum_learning_rate: 0.00001
+  #regularization:
+  #  type: l2  # can be "l1", "l2", "l1_l2" (case-insensitive).
+  #  scale: 1e-4  # if using "l1_l2" regularization, this should be a YAML list.
+
+  #maximum_iterations: 50
+
+train:
+    batch_size: 16
+    # (optional) Batch size is the number of "examples" or "tokens" (default: "examples").
+    batch_type: examples
+
+    # (optional) Save a checkpoint every this many steps.
+    save_checkpoints_steps: 1000
+    # (optional) How many checkpoints to keep on disk.
+
+    # (optional) Save summaries every this many steps.
+    save_summary_steps: 100
+
+    # (optional) Train for this many steps. If not set, train forever.
+    # (optional) If true, makes a single pass over the training data (default: false).
+
+    # (optional) The maximum length of feature sequences during training (default: None).
+    # (optional) The maximum length of label sequences during training (default: None).
+
+    # (optional) The width of the length buckets to select batch candidates from (default: 5).
+    maximum_features_length: 400
+    maximum_labels_length: 400
+    # (optional) The number of threads to use for processing data in parallel (default: 4).
+    num_threads: 4
+    # (optional) The number of batches to prefetch asynchronously. If not set, use an
+    # automatically tuned value on TensorFlow 1.8+ and 1 on older versions. (default: null).
+
+    average_last_checkpoints: 20
+  # (optional) The maximum length of label sequences during training (default: null).
+    # (optional) The number of elements from which to sample during shuffling (default: 500000).
+    # Set 0 or null to disable shuffling, -1 to match the number of training examples.
+    sample_buffer_size: 200
+    train_steps: 30000
+
+
+eval:
+    # (optional) The batch size to use (default: 32).
+    batch_size: 32
+    # (optional) The number of threads to use for processing data in parallel (default: 1).
+    num_threads: 4
+    # (optional) The number of batches to prefetch asynchronously (default: 1).
+    # (optional) Evaluate every this many seconds (default: 18000).
+    eval_delay: 300
+
+    # (optional) Save evaluation predictions in model_dir/eval/.
+    save_eval_predictions: true
+    # (optional) Evalutator or list of evaluators that are called on the saved evaluation predictions.
+    # Available evaluators: BLEU, BLEU-detok, ROUGE
+    external_evaluators: BLEU
+
+    # (optional) Model exporter(s) to use during the training and evaluation loop:
+    # last, final, best, or null (default: last).
+    exporters: last
+
+
+  # (optional) Inference options.
+infer:
+    # (optional) The batch size to use (default: 1).
+    batch_size: 10
+
+    # (optional) The number of threads to use for processing data in parallel (default: 1).
+    num_threads: 1
+    # (optional) The number of batches to prefetch asynchronously (default: 1).
+    prefetch_buffer_size: 1
+
+    # (optional) For compatible models, the number of hypotheses to output (default: 1).
+    n_best: 1
+    # (optional) For compatible models, also output the score (default: false).
+    with_scores: false
+    # (optional) For compatible models, also output the alignments (can be: "null", "hard",
+    # default: "null").
+    with_alignments: null
+
+
+  # (optional) Scoring options.
+score:
+    # (optional) The batch size to use (default: 64).
+    batch_size: 64
+    # (optional) The number of threads to use for processing data in parallel (default: 1).
+    num_threads: 1
+    # (optional) The number of batches to prefetch asynchronously (default: 1).
+    prefetch_buffer_size: 1
+
+    # (optional) Also report token-level cross entropy.
+    with_token_level: true
+    # (optional) Also output the alignments (can be: "null", "hard", default: "null").
+    with_alignments: null
